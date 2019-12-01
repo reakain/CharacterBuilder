@@ -4,13 +4,11 @@
 import tweepy
 import logging
 from config import create_api
-from questmaker import Request
+from characterbuilder import Character, Country
 import time
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
-
-quests = Request()
 
 def check_mentions(api, keywords, since_id, check_time):
     logger.info("Retrieving mentions")
@@ -27,10 +25,19 @@ def check_mentions(api, keywords, since_id, check_time):
 
             #if not tweet.user.following:
             #    tweet.user.follow()
+            tweet_text = ""
+            if keywords[0] in tweet.full_text.lower():
+                new_char = Character()
+                new_char.build_character()
+                tweet_text = new_char.character_bio
+            elif keywords[1] in tweet.full_text.lower():
+                new_country = Country()
+                new_country.build_country()
+                tweet_text = new_country.country_bio()
 
             api.update_status(
             #    status="Please reach us via DM",
-                status=make_reply(tweet, quests.generate_new_quest()),
+                status=make_reply(tweet, tweet_text),
                 in_reply_to_status_id=tweet.id,
             )
     return new_since_id
@@ -51,7 +58,7 @@ def main():
     check_time = time.time()
     
     while True:
-        since_id = check_mentions(api, ["quest", "task"], since_id, check_time)
+        since_id = check_mentions(api, ["character", "country"], since_id, check_time)
         check_time = time.time()
         logger.info("Waiting...")
         time.sleep(60)
