@@ -18,11 +18,63 @@ descriptorList = pycorpora.humans.descriptions['descriptions']
 descriptorsMin = 3
 descriptorsMax = 8
 occupations = pycorpora.humans.occupations['occupations']
+hobbyList = [ 
+    "pottery",
+    "woodworking",
+    "metalworking",
+    "programming",
+    "writing",
+    "scrapbooking",
+    "making costumes",
+    "photography",
+    "making Christmas decorations",
+    "painting",
+    "sketching",
+    "movie making",
+    "coin collecting",
+    "stamp collecting",
+    "bird watching",
+    "reading",
+    "theatre",
+    "gambling",
+    "visiting museums",
+    "hiking",
+    "bicycling",
+    "running",
+    "weight lifting",
+    "fencing",
+    "soccer",
+    "sightseeing"
+    ]
+hobbyMin = 0
+hobbyMax = 20
 
 # Country statics
 countryNames = firstNames
 cityNames = firstNames
-govTypes = firstNames
+govTypes = ["Autocracy",
+        "Democracy",
+        "Oligarchy",
+        "Anarchy",
+        "Confederation",
+        "Federation",
+        "Unitary State",
+        "Demarchy",
+        "Electocracy",
+        "Constitutial Republic",
+        "Democratic Republic",
+        "Parliamentary Republic",
+        "Republic",
+        "Theocracy",
+        "Plutocracy",
+        "Technocracy",
+        "Absolute Monarchy",
+        "Dictatorship",
+        "Constitutional Monarchy",
+        "City-State",
+        "Commune",
+        "Empire",
+        "Colony"]
 countryPopMin = 1000
 countryPopMax = 1000000000
 importExportList = pycorpora.materials['layperson-metals']['layperson metals']
@@ -66,7 +118,7 @@ class Country(object):
     def country_bio(self):
         info = "Name: " + self.name.capitalize() + "\n" \
             + "Population: " + str(self.population) + "\n" \
-            + "Government Structure: " + self.govType.capitalize() + "\n" \
+            + "Government: " + self.govType.capitalize() + "\n" \
             + "Capital: " + self.capital.capitalize() + "\n" \
             + "Description: " + self.desc() + "\n" \
             + "Exports: " + inf.join(self.exports).capitalize() + "\n" \
@@ -81,11 +133,11 @@ class Country(object):
             countrySize = "large"
         else:
             countrySize = "medium"
-        desc = "{} is a {} country with a {} government. The {} {} is a notable landmark" \
+        desc = "{} is a {} {} nation. The {} {} is a notable landmark" \
             + " near the capital."
         
         desc_full = desc.format(self.name.capitalize(), countrySize, self.govType, \
-            self.features[0].name, self.features[0].type)
+            self.features[0].name.capitalize(), self.features[0].type)
         return desc_full
 
 
@@ -125,7 +177,6 @@ class Character(object):
         self.occupation = ""
         self.country = Country()
         self.hobbies = []
-        self.skills = []
         self.descriptors = []
         self.family = []
 
@@ -135,6 +186,7 @@ class Character(object):
         self.occupation = random.choice(occupations)
         self.descriptors = self.build_list(descriptorsMin,descriptorsMax,descriptorList)
         self.country.build_country()
+        self.hobbies = self.build_list(hobbyMin,hobbyMax,hobbyList)
         if family:
             self.build_family()
 
@@ -151,6 +203,10 @@ class Character(object):
     def build_list(self, min, max, full_list):
         num = random.randint(min,max)
         buildList = []
+        if(num == 0):
+            buildList.append("None")
+            return buildList
+
         buildList.append(random.choice(full_list))
         for x in range(num-1):
             buildList.append(self.get_check_list(buildList,full_list))
@@ -179,22 +235,24 @@ class Character(object):
     
     def family_info(self):
         fam_info = ""
+        if(len(self.family) == 0):
+            return "    None\n"
+
         for fam in self.family:
-            fam_info += fam[1] + ": " + fam[0].full_name() + "\n"
+            fam_info += "    " + fam[1].capitalize() + ": " + fam[0].full_name() + "\n"
 
         return fam_info
 
     def character_bio(self):
-        info = "Name: " + charry.full_name() + "\n" \
-            + "Age: " + inf.number_to_words(charry.age).capitalize() + "\n" \
+        info = "Name: " + self.full_name() + "\n" \
+            + "Age: " + inf.number_to_words(self.age).capitalize() + "\n" \
             + "Gender: " + "\n" \
-            + "Occupation: " + charry.occupation.capitalize() + "\n" \
+            + "Occupation: " + self.occupation.capitalize() + "\n" \
             + "Race: " + "\n" \
             + "Country: " + self.country.name.capitalize() + "\n" \
             + "Family: " + "\n" + self.family_info() \
-            + "Qualities: " + inf.join(charry.descriptors).capitalize() + "\n" \
-            + "Hobbies: " + "\n" \
-            + "Skills: "
+            + "Qualities: " + inf.join(self.descriptors).capitalize() + "\n" \
+            + "Hobbies: " + inf.join(self.hobbies).capitalize()
 
         return info
 
