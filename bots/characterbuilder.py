@@ -10,7 +10,13 @@ namesMax = 6
 firstNames = pycorpora.humans.firstNames['firstNames']
 lastNames = pycorpora.humans.lastNames['lastNames']
 middleNames = firstNames + lastNames
-genders = []
+genders = [
+    "male",
+    "female",
+    "non-binary",
+    "neuter",
+    "genderless"
+]
 familySizeMin = 0
 familySizeMax = 15
 familyMemberRelations = ["grandparent","parent","child","grandchild","sibling"]
@@ -171,7 +177,7 @@ class Gender(object):
 class Character(object):
     def __init__(self):
         self.names = []
-        self.gender = Gender()
+        self.gender = ""
         self.age = ""
         self.race = ""
         self.occupation = ""
@@ -183,6 +189,7 @@ class Character(object):
     def build_character(self, family = True):
         self.build_name()
         self.age = random.randint(1,1000)
+        self.gender = random.choice(genders)
         self.occupation = random.choice(occupations)
         self.descriptors = self.build_list(descriptorsMin,descriptorsMax,descriptorList)
         self.country.build_country()
@@ -246,7 +253,7 @@ class Character(object):
     def character_bio(self):
         info = "Name: " + self.full_name() + "\n" \
             + "Age: " + inf.number_to_words(self.age).capitalize() + "\n" \
-            + "Gender: " + "\n" \
+            + "Gender: " + self.gender.capitalize() + "\n" \
             + "Occupation: " + self.occupation.capitalize() + "\n" \
             + "Race: " + "\n" \
             + "Country: " + self.country.name.capitalize() + "\n" \
