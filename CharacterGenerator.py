@@ -1,7 +1,7 @@
 import random
 import pycorpora
 import inflect
-from CountryGenerator import Country
+from RandomGenerators.CountryGenerator import Country
 
 inf = inflect.engine()
 
