@@ -1,36 +1,18 @@
-# Character Builder
-A python bot to generate a detailed character!
+# Random Generators
+Python classes for generation of random literary objects/helpers. (IE characters, countries, etc)
 
-This python3 program uses corpora data to generate a detailed character.
+These classes primarily use pycorpora for data generation and inflect for data cleanup.
 
-## Build Docker Image to Test
- 1. Run the command in the bash shell from the project directory:
+## Usage Example
+```
+from CharacterGenerator import Character
 
-     ```docker build . -t storyteller-bot```
+newCharacter = Character()
+newCharacter.build_character()
 
- 2. Test your build from powershell with
-   
-     ```docker run -it -e CONSUMER_KEY="key val here" -e CONSUMER_SECRET="key val here" -e ACCESS_TOKEN="key val here" -e ACCESS_TOKEN_SECRET="key val here" storyteller-bot```
+print(newCharacter.character_bio())
+```
 
-## Build and Deploy Docker Image
-Note: Everything is in the bash shell for this part! This is also for digital ocean droplets, and `twitter-bot-drop` is the name of my digital ocean droplet that I'm making and `storyteller-bot` is the docker image name.
-1. If you don't have anything registered as a docker-machine (which controls multiple instances of docker images) then you make one.
-   
-    ```docker-machine create --driver digitalocean --digitalocean-access-token YOUR-ACCESS-TOKEN-HERE twitter-bot-drop```
 
-2. Then this command sets your current shell environment to be your docker-machine shell environment
-   
-    `eval $(docker-machine env twitter-bot-drop)`
-
-3. Then in your new shell you build your docker image
-   
-    `docker build . -t storyteller-bot`
-
-4. And then deploy it! The only difference here is the -id instead of -it which just tells it you want it to be detached from your shell.
-   
-    `docker run -id -e CONSUMER_KEY="key val here" -e CONSUMER_SECRET="key val here" -e ACCESS_TOKEN="key val here" -e ACCESS_TOKEN_SECRET="key val here" storyteller-bot`
-
-Et voila! Functioning docker image running on your droplet (which is called a docker-machine)
-
-## References
-- [Guru99 Walkthrough of nltk and text parsing](https://www.guru99.com/word-embedding-word2vec.html)
+## Resources
+- [Corpora Project](https://github.com/dariusk/corpora)
