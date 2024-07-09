@@ -2,4 +2,4 @@ importlib-metadata==1.1.0
 inflect==3.0.2
 more-itertools==8.0.0
 pycorpora==0.1.2
-zipp==0.6.0
+zipp==3.19.1
